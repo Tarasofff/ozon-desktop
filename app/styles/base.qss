@@ -1,0 +1,18 @@
+QLabel#title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+QLabel#error {
+    color: red;
+    font-size: 14px;
+}
+
+QMainWindow {
+    background-color: qlineargradient(
+        x1:0, y1:0, x2:0, y2:1,
+        stop:0 #5faaeb,
+        stop:1 #e6f2ff 
+    );
+}

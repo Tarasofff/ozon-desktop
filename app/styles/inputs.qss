@@ -1,0 +1,32 @@
+QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #2d7ff9;
+}
+
+QDateEdit {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+QDateEdit:focus {
+    border: 1px solid #2d7ff9;
+}
+
+QComboBox {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+QComboBox:focus {
+    border: 1px solid #2d7ff9;
+}

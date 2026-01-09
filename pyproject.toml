@@ -1,0 +1,30 @@
+[project]
+name = "ozon-ui"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Артур Тарасов",email = "arthur.tarasov.xv70@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pyside6 (>=6.10.1,<7.0.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "pydantic (>=2.12.5,<3.0.0)",
+    "qasync (>=0.28.0,<0.29.0)",
+    "keyring (>=25.7.0,<26.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = ">=3.13,<3.15"
+
+
+[dependency-groups]
+dev = [
+    "pyinstaller (>=6.17.0,<7.0.0)"
+]
