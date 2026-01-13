@@ -12,6 +12,6 @@ class AuthService:
 
         if ok:
             user = UserAuthResponseModel.model_validate(data)
-            save_token(user.token)
+            # save_token(user.token)
 
         return ok, data

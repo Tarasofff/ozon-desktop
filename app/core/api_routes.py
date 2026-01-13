@@ -22,7 +22,6 @@ class PatientApi(BaseApi):
     INDEX = f"{BaseApi.PREFIX}/patient"
 
     create = f"{INDEX}/create"
-    # report = f"{INDEX}/report"  # TODO
 
     @staticmethod
     def get_by_id(patient_id: int) -> str:

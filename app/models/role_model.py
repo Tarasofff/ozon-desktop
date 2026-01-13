@@ -10,4 +10,5 @@ class RoleResponseModel(BaseEntity, RoleModel):
     pass
 
 
-PaginatedRolesModel = PaginatedResponseMixin[RoleResponseModel]
+class PaginatedRolesModel(PaginatedResponseMixin[RoleResponseModel]):
+    pass
