@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 )
 from models import RoleResponseModel
 from viewmodels import RegisterViewModel
-from components import FormContainer, BackButton
+from ui.components import FormContainer, BackButton
 from PySide6.QtCore import Qt, QDate
 import re
 
@@ -79,8 +79,8 @@ class RegisterView(FormContainer):
     def _connect_signals(self):
         self.register_button.clicked.connect(self._handle_register)
 
-        self.vm.success.connect(self.on_success)
-        self.vm.error.connect(self.on_error)
+        self.vm._success.connect(self.on_success)
+        self.vm._error.connect(self.on_error)
 
         self.vm.roles_list.connect(self._on_roles_loaded)
 
@@ -148,19 +148,19 @@ class RegisterView(FormContainer):
         dob = self.date_of_birth_input.text()
         role_id = self.role_selector.currentData()
 
-        print(
-            7777,
-            {
-                "first_name": first_name,
-                "middle_name": middle_name,
-                "last_name": last_name,
-                "email": email,
-                "phone": phone,
-                "password": password,
-                "date_of_birth": dob,
-                "role_id": role_id,
-            },
-        )
+        # print(
+        #     7777,
+        #     {
+        #         "first_name": first_name,
+        #         "middle_name": middle_name,
+        #         "last_name": last_name,
+        #         "email": email,
+        #         "phone": phone,
+        #         "password": password,
+        #         "date_of_birth": dob,
+        #         "role_id": role_id,
+        #     },
+        # )
 
         self.vm.register(
             first_name,

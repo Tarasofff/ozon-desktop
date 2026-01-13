@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import List
-from mixins import PaginatedResponseMixin, BaseEntity
+from models.mixins import PaginatedResponseMixin, BaseEntity
 
 
 class RoleModel(BaseModel):
@@ -11,5 +10,4 @@ class RoleResponseModel(BaseEntity, RoleModel):
     pass
 
 
-class PaginatedRolesModel(PaginatedResponseMixin):
-    data: List[RoleResponseModel]
+PaginatedRolesModel = PaginatedResponseMixin[RoleResponseModel]

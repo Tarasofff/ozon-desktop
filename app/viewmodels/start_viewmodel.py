@@ -1,6 +1,7 @@
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import Signal
+from .base_viewmodel import BaseViewModel
 
 
-class StartViewModel(QObject):
+class StartViewModel(BaseViewModel):
     show_login = Signal()
     show_register = Signal()

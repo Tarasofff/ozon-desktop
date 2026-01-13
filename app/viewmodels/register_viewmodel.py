@@ -1,12 +1,11 @@
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import Signal
 import asyncio
 from models import UserRegistrationModel, PaginatedRolesModel
 from services.user.api.user_api_service import UserApiService
+from .base_viewmodel import BaseViewModel
 
 
-class RegisterViewModel(QObject):
-    success = Signal()
-    error = Signal(str)
+class RegisterViewModel(BaseViewModel):
     roles_list = Signal(list)
 
     def __init__(self):
@@ -46,19 +45,20 @@ class RegisterViewModel(QObject):
         try:
             ok, data = await self.user_api_service.registration_request(user)
             if ok:
-                self.success.emit()
+                self.emit_success()
             else:
-                self.error.emit(f"Ошибка регистрации: {data}")
+                self.emit_error(f"Ошибка регистрации: {data}")
         except Exception as e:
-            self.error.emit(f"Ошибка сервера: {str(e)}")
+            self.emit_error(f"Ошибка сервера: {str(e)}")
 
     async def _load_roles_task(self):
         try:
             ok, data = await self.user_api_service.get_all_user_roles()
             if ok:
                 roles = PaginatedRolesModel.model_validate(data)
+                self.emit_success()
                 self.roles_list.emit(roles.data)
             else:
-                self.error.emit(f"Ошибка загрузки ролей: {data}")
+                self.emit_error(f"Ошибка загрузки ролей: {data}")
         except Exception as e:
-            self.error.emit(f"Ошибка сервера: {str(e)}")
+            self.emit_error(f"Ошибка сервера: {str(e)}")

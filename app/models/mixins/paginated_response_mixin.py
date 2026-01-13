@@ -1,7 +1,11 @@
 from pydantic import BaseModel
+from typing import Generic, TypeVar, List
+
+T = TypeVar("T")
 
 
-class PaginatedResponseMixin(BaseModel):
+class PaginatedResponseMixin(BaseModel, Generic[T]):
+    data: List[T]
     total: int
     limit: int
     offset: int

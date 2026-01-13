@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton
-from components import FormContainer, BackButton
+from ui.components import FormContainer, BackButton
 from viewmodels import LoginViewModel
 from PySide6.QtCore import Qt
 
@@ -38,8 +38,8 @@ class LoginView(FormContainer):
 
     def _connect_signals(self):
         self.login_button.clicked.connect(self._handle_login)
-        self.vm.success.connect(self.on_success)
-        self.vm.error.connect(self.on_error)
+        self.vm._success.connect(self.on_success)
+        self.vm._error.connect(self.on_error)
 
     def _handle_login(self):
         phone = self.phone_input.text()

@@ -1,12 +1,10 @@
-from PySide6.QtCore import QObject, Signal
 import asyncio
+from .base_viewmodel import BaseViewModel
 from models import UserLoginModel
 from services.user.auth.auth_service import AuthService
 
 
-class LoginViewModel(QObject):
-    success = Signal()
-    error = Signal(str)
+class LoginViewModel(BaseViewModel):
 
     def __init__(self):
         super().__init__()
@@ -20,8 +18,8 @@ class LoginViewModel(QObject):
         try:
             ok, data = await self.auth_service.auth(payload)
             if ok:
-                self.success.emit()
+                self.emit_success()
             else:
-                self.error.emit(f"Ошибка входа: {data}")
+                self.emit_error(f"Ошибка входа: {data}")
         except Exception as e:
-            self.error.emit(f"Ошибка сервера: {str(e)}")
+            self.emit_error(f"Ошибка сервера: {str(e)}")

@@ -1,6 +1,11 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr
-from mixins import PasswordMixin, BaseEntity
+from models.mixins import BaseEntity
+
+
+class UserPasswordMixin(BaseModel):
+    password: str
+
 
 class UserModel(BaseModel):
     first_name: str
@@ -13,11 +18,11 @@ class UserModel(BaseModel):
     role_id: int
 
 
-class UserRegistrationModel(UserModel, PasswordMixin):
+class UserRegistrationModel(UserModel, UserPasswordMixin):
     is_active: bool = True
 
 
-class UserLoginModel(PasswordMixin):
+class UserLoginModel(UserPasswordMixin):
     phone: str
 
 
