@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
 from PySide6.QtCore import Qt
-from viewmodels.start_viewmodel import StartViewModel
+from viewmodels import StartViewModel
 
 class StartView(QWidget):
     def __init__(self):

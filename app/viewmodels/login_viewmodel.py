@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Signal
 import asyncio
-from models.user_model import UserLoginRequestSchema
+from models import UserLoginModel
 from services.user.auth.auth_service import AuthService
 
 
@@ -13,15 +13,10 @@ class LoginViewModel(QObject):
         self.auth_service = AuthService()
 
     def login(self, phone: str, password: str):
-        if not phone or not password:
-            self.error.emit("Заполните все поля")
-            return
-
-        payload = UserLoginRequestSchema(phone=phone, password=password)
-
+        payload = UserLoginModel(phone=phone, password=password)
         asyncio.create_task(self._login_task(payload))
 
-    async def _login_task(self, payload: UserLoginRequestSchema):
+    async def _login_task(self, payload: UserLoginModel):
         try:
             ok, data = await self.auth_service.auth(payload)
             if ok:

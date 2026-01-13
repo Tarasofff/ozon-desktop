@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton
-from ui.components.forms.form_container import FormContainer
-from viewmodels.login_viewmodel import LoginViewModel
-from ui.components.buttons.back_button import BackButton
+from components import FormContainer, BackButton
+from viewmodels import LoginViewModel
 from PySide6.QtCore import Qt
 
 
@@ -29,9 +28,6 @@ class LoginView(FormContainer):
 
         self.login_button = QPushButton("Войти")
 
-        self.error_label = QLabel("")
-        self.error_label.setObjectName("error")
-
     def _setup_layout(self):
         self.add(self.title_label)
         self.add(self.phone_input)
@@ -42,20 +38,11 @@ class LoginView(FormContainer):
 
     def _connect_signals(self):
         self.login_button.clicked.connect(self._handle_login)
-        self.vm.success.connect(self._on_success)
-        self.vm.error.connect(self._on_error)
+        self.vm.success.connect(self.on_success)
+        self.vm.error.connect(self.on_error)
 
     def _handle_login(self):
         phone = self.phone_input.text()
         password = self.password_input.text()
+
         self.vm.login(phone, password)
-
-    # TODO
-    def _on_success(self):
-        self.error_label.setText("")
-        print("Успешный логин!")
-
-    # TODO
-    def _on_error(self, message: str):
-        self.error_label.setText(message)
-        print("Ошибка логина:", message)

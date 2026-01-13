@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class PaginatedResponseModel(BaseModel):
+class PaginatedResponseMixin(BaseModel):
     total: int
     limit: int
     offset: int

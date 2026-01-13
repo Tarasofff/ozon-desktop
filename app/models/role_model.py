@@ -1,19 +1,15 @@
-from models.base_response_model import PaginatedResponseModel
-from models.timestamp_model import Timestamp
 from pydantic import BaseModel
 from typing import List
-
-class RoleEntity(Timestamp):
-    id: int
+from mixins import PaginatedResponseMixin, BaseEntity
 
 
 class RoleModel(BaseModel):
     name: str
 
 
-class RoleResponseModel(RoleEntity, RoleModel):
+class RoleResponseModel(BaseEntity, RoleModel):
     pass
 
 
-class AllRolesResponseModel(PaginatedResponseModel):
+class PaginatedRolesModel(PaginatedResponseMixin):
     data: List[RoleResponseModel]

@@ -1,13 +1,18 @@
-from models.role_model import AllRolesResponseModel
-from models.user_model import UserLoginRequestSchema, UserLoginResponseSchema
+from models.role_model import PaginatedRolesModel
+from models import (
+    UserLoginModel,
+    UserAuthResponseModel,
+    UserRegistrationModel,
+)
 from core.api_routes import user_api
 from infrastructure.http.client import http
 
 
 class UserApiService:
+
     async def login_request(
-        self, data: UserLoginRequestSchema
-    ) -> tuple[bool, UserLoginResponseSchema]:
+        self, data: UserLoginModel
+    ) -> tuple[bool, UserAuthResponseModel]:
         response = await http.post(
             user_api.login,
             json=data.model_dump(),
@@ -15,9 +20,19 @@ class UserApiService:
 
         return response.status_code == 200, response.json()
 
+    async def registration_request(
+        self, data: UserRegistrationModel
+    ) -> tuple[bool, UserAuthResponseModel]:
+        response = await http.post(
+            user_api.register,
+            json=data.model_dump(),
+        )
+
+        return response.status_code == 201, response.json()
+
     async def get_all_user_roles(
         self, limit: int = 15, offset: int = 0
-    ) -> tuple[bool, AllRolesResponseModel]:
+    ) -> tuple[bool, PaginatedRolesModel]:
         response = await http.get(
             user_api.get_all_roles(limit, offset),
         )

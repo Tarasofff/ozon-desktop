@@ -1,11 +1,10 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
-from core.app_routes import app_routes
+from core import app_routes, app_config
 from infrastructure.router.router import Router
-from ui.start_view import StartView
-from ui.login_view import LoginView
-from ui.register_view import RegisterView
+from .start_view import StartView
+from .login_view import LoginView
+from .register_view import RegisterView
 from PySide6.QtGui import QIcon
-from core.app_config import app_config
 
 
 class MainWindow(QMainWindow):

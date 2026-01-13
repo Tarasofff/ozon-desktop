@@ -1,7 +1,7 @@
 import sys, asyncio
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
-from ui.main_window import MainWindow
+from ui import MainWindow
 from pathlib import Path
 
 
