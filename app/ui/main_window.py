@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
+from ui.patients_view import PatientsView
 from core import app_config
 from core.constants import AppRoutes
 from infrastructure.router.router import Router
@@ -32,10 +33,12 @@ class MainWindow(QMainWindow):
         self.start = StartView()
         self.login = LoginView()
         self.register = RegisterView()
+        self.patients = PatientsView()
 
         self.router.register(AppRoutes.START, self.start)
         self.router.register(AppRoutes.LOGIN, self.login)
         self.router.register(AppRoutes.REGISTRATION, self.register)
+        self.router.register(AppRoutes.PATIENTS, self.patients)
 
         self.router.navigate(AppRoutes.START)
 
@@ -57,6 +60,18 @@ class MainWindow(QMainWindow):
             lambda: self.router.navigate(AppRoutes.START)
         )
 
+        self.login.vm.success.connect(lambda: self._on_login_success())
+        self.register.vm.success.connect(lambda: self._on_login_success())
+
+        self.login.vm.success.connect(lambda: self.router.navigate(AppRoutes.PATIENTS))
+        self.register.vm.success.connect(
+            lambda: self.router.navigate(AppRoutes.PATIENTS)
+        )
+
     def _on_route_changed(self, route: str) -> None:
         if route == AppRoutes.REGISTRATION:
             self.register.vm.load_roles()
+
+    def _on_login_success(self):
+        self.patients.load_patients()
+        self.router.navigate(AppRoutes.PATIENTS)

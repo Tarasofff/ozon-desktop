@@ -5,3 +5,8 @@ from .user_model import (
     UserModel,
     UserRegistrationModel,
 )
+from .doctor_model import (
+    DoctorSpecializationEntityModel,
+    DoctorSpecializationModel,
+    PaginatedDoctorSpecializationModel,
+)
