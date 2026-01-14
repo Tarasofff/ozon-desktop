@@ -4,3 +4,4 @@ class AppConfig:
 
 
 app_config = AppConfig()
+

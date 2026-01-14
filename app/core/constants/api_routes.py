@@ -1,4 +1,4 @@
-from core.app_config import app_config
+from core import app_config
 
 
 class BaseApi:
@@ -54,9 +54,3 @@ class DiagnoseApi(BaseApi):
     @staticmethod
     def get_all(limit: int, offset: int) -> str:
         return f"{DiagnoseApi.INDEX}?limit={limit}&offset={offset}"
-
-
-user_api = UserApi()
-patient_api = PatientApi()
-doctor_api = DoctorApi()
-diagnose_api = DoctorApi()

@@ -1,10 +1,10 @@
+from core.constants import UserApi
 from models.role_model import PaginatedRolesModel
 from models import (
     UserLoginModel,
     UserAuthResponseModel,
     UserRegistrationModel,
 )
-from core.api_routes import user_api
 from infrastructure.http.client import http
 
 
@@ -14,7 +14,7 @@ class UserApiService:
         self, data: UserLoginModel
     ) -> tuple[bool, UserAuthResponseModel]:
         response = await http.post(
-            user_api.login,
+            UserApi.login,
             json=data.model_dump(),
         )
 
@@ -24,7 +24,7 @@ class UserApiService:
         self, data: UserRegistrationModel
     ) -> tuple[bool, UserAuthResponseModel]:
         response = await http.post(
-            user_api.register,
+            UserApi.register,
             json=data.model_dump(),
         )
 
@@ -34,7 +34,7 @@ class UserApiService:
         self, limit: int = 15, offset: int = 0
     ) -> tuple[bool, PaginatedRolesModel]:
         response = await http.get(
-            user_api.get_all_roles(limit, offset),
+            UserApi.get_all_roles(limit, offset),
         )
 
         return response.status_code == 200, response.json()

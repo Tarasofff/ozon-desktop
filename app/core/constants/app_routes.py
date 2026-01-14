@@ -1,7 +1,7 @@
-class AppRoutes:
+from enum import StrEnum
+
+
+class AppRoutes(StrEnum):
     START = "start"
     LOGIN = "login"
     REGISTRATION = "register"
-
-
-app_routes = AppRoutes()
