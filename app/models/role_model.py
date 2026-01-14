@@ -6,9 +6,9 @@ class RoleModel(BaseModel):
     name: str
 
 
-class RoleResponseModel(BaseEntity, RoleModel):
+class RoleEntityModel(BaseEntity, RoleModel):
     pass
 
 
-class PaginatedRolesModel(PaginatedResponseMixin[RoleResponseModel]):
+class PaginatedRolesModel(PaginatedResponseMixin[RoleEntityModel]):
     pass

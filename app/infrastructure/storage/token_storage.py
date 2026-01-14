@@ -19,8 +19,5 @@ def get_token() -> tuple[Optional[str], Optional[str]]:
 
 
 def delete_token() -> None:
-    try:
-        for key in (_TOKEN_KEY, _TOKEN_TYPE_KEY):
-            keyring.delete_password(_APP_NAME, key)
-    except Exception:
-        pass
+    for key in (_TOKEN_KEY, _TOKEN_TYPE_KEY):
+        keyring.delete_password(_APP_NAME, key)

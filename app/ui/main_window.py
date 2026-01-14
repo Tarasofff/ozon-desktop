@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
-from core import app_routes, app_config
+from core import app_config
+from core.constants import AppRoutes
 from infrastructure.router.router import Router
 from .start_view import StartView
 from .login_view import LoginView
@@ -32,11 +33,11 @@ class MainWindow(QMainWindow):
         self.login = LoginView()
         self.register = RegisterView()
 
-        self.router.register(app_routes.START, self.start)
-        self.router.register(app_routes.LOGIN, self.login)
-        self.router.register(app_routes.REGISTRATION, self.register)
+        self.router.register(AppRoutes.START, self.start)
+        self.router.register(AppRoutes.LOGIN, self.login)
+        self.router.register(AppRoutes.REGISTRATION, self.register)
 
-        self.router.navigate(app_routes.START)
+        self.router.navigate(AppRoutes.START)
 
     def _setup_router(self) -> None:
         self.router = Router(self.stack)
@@ -44,18 +45,18 @@ class MainWindow(QMainWindow):
     def _setup_navigation(self) -> None:
         self.router.route_changed.connect(self._on_route_changed)
 
-        self.start.vm.show_login.connect(lambda: self.router.navigate(app_routes.LOGIN))
+        self.start.vm.show_login.connect(lambda: self.router.navigate(AppRoutes.LOGIN))
         self.start.vm.show_register.connect(
-            lambda: self.router.navigate(app_routes.REGISTRATION)
+            lambda: self.router.navigate(AppRoutes.REGISTRATION)
         )
 
         self.login.back_button.back_clicked.connect(
-            lambda: self.router.navigate(app_routes.START)
+            lambda: self.router.navigate(AppRoutes.START)
         )
         self.register.back_button.back_clicked.connect(
-            lambda: self.router.navigate(app_routes.START)
+            lambda: self.router.navigate(AppRoutes.START)
         )
 
     def _on_route_changed(self, route: str) -> None:
-        if route == app_routes.REGISTRATION:
+        if route == AppRoutes.REGISTRATION:
             self.register.vm.load_roles()

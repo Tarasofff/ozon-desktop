@@ -1,4 +1,4 @@
-from .role_model import RoleModel, RoleResponseModel, PaginatedRolesModel
+from .role_model import RoleModel, RoleEntityModel, PaginatedRolesModel
 from .user_model import (
     UserAuthResponseModel,
     UserLoginModel,

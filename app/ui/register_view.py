@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
     QDateEdit,
     QComboBox,
 )
-from models import RoleResponseModel
+from models import RoleEntityModel
 from viewmodels import RegisterViewModel
 from ui.components import FormContainer, BackButton
 from PySide6.QtCore import Qt, QDate
@@ -70,7 +70,7 @@ class RegisterView(FormContainer):
         self.add(self.error_label)
         self.add(self.back_button)
 
-    def _on_roles_loaded(self, roles: List[RoleResponseModel]):
+    def _on_roles_loaded(self, roles: List[RoleEntityModel]):
         self.role_selector.clear()
 
         for role in roles:
@@ -79,11 +79,12 @@ class RegisterView(FormContainer):
     def _connect_signals(self):
         self.register_button.clicked.connect(self._handle_register)
 
-        self.vm._success.connect(self.on_success)
-        self.vm._error.connect(self.on_error)
+        self.vm.success.connect(self.on_success)
+        self.vm.error.connect(self.on_error)
 
         self.vm.roles_list.connect(self._on_roles_loaded)
 
+    # TODO
     def _validate_inputs(self) -> bool:
         first_name = self.first_name_input.text().strip()
         middle_name = self.middle_name_input.text().strip()
@@ -147,20 +148,6 @@ class RegisterView(FormContainer):
         password = self.password_input.text()
         dob = self.date_of_birth_input.text()
         role_id = self.role_selector.currentData()
-
-        # print(
-        #     7777,
-        #     {
-        #         "first_name": first_name,
-        #         "middle_name": middle_name,
-        #         "last_name": last_name,
-        #         "email": email,
-        #         "phone": phone,
-        #         "password": password,
-        #         "date_of_birth": dob,
-        #         "role_id": role_id,
-        #     },
-        # )
 
         self.vm.register(
             first_name,

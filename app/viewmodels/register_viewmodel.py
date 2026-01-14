@@ -1,6 +1,7 @@
+from typing import Callable
 from PySide6.QtCore import Signal
-import asyncio
-from models import UserRegistrationModel, PaginatedRolesModel
+from services.user.session.user_session_service import UserSessionService
+from models import UserRegistrationModel, PaginatedRolesModel, UserAuthResponseModel
 from services.user.api.user_api_service import UserApiService
 from .base_viewmodel import BaseViewModel
 
@@ -11,6 +12,7 @@ class RegisterViewModel(BaseViewModel):
     def __init__(self):
         super().__init__()
         self.user_api_service = UserApiService()
+        self.user_session_service = UserSessionService()
 
     def register(
         self,
@@ -23,7 +25,7 @@ class RegisterViewModel(BaseViewModel):
         date_of_birth: str,
         role_id: int,
     ):
-        payload = UserRegistrationModel.model_validate(
+        user = UserRegistrationModel.model_validate(
             {
                 "first_name": first_name,
                 "middle_name": middle_name,
@@ -36,29 +38,26 @@ class RegisterViewModel(BaseViewModel):
             }
         )
 
-        asyncio.create_task(self._register_task(payload))
+        auth_callback: Callable[[UserAuthResponseModel], None] = (
+            lambda data: self.user_session_service.auth(data)
+        )
+
+        self._run_async_task(
+            self.user_api_service.registration_request,
+            user,
+            success_callback=auth_callback,
+            error_prefix="Ошибка регистрации",
+        )
 
     def load_roles(self):
-        asyncio.create_task(self._load_roles_task())
+        roles_list_emit: Callable[[PaginatedRolesModel], None] = (
+            lambda data: self.roles_list.emit(
+                PaginatedRolesModel.model_validate(data).data
+            )
+        )
 
-    async def _register_task(self, user: UserRegistrationModel):
-        try:
-            ok, data = await self.user_api_service.registration_request(user)
-            if ok:
-                self.emit_success()
-            else:
-                self.emit_error(f"Ошибка регистрации: {data}")
-        except Exception as e:
-            self.emit_error(f"Ошибка сервера: {str(e)}")
-
-    async def _load_roles_task(self):
-        try:
-            ok, data = await self.user_api_service.get_all_user_roles()
-            if ok:
-                roles = PaginatedRolesModel.model_validate(data)
-                self.emit_success()
-                self.roles_list.emit(roles.data)
-            else:
-                self.emit_error(f"Ошибка загрузки ролей: {data}")
-        except Exception as e:
-            self.emit_error(f"Ошибка сервера: {str(e)}")
+        self._run_async_task(
+            self.user_api_service.get_all_user_roles_request,
+            success_callback=roles_list_emit,
+            error_prefix="Ошибка загрузки ролей",
+        )

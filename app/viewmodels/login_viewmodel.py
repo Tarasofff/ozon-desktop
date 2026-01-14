@@ -1,25 +1,27 @@
-import asyncio
+from typing import Callable
+from services.user.session.user_session_service import UserSessionService
+from services.user.api.user_api_service import UserApiService
 from .base_viewmodel import BaseViewModel
-from models import UserLoginModel
-from services.user.auth.auth_service import AuthService
+from models import UserLoginModel, UserAuthResponseModel
 
 
 class LoginViewModel(BaseViewModel):
 
     def __init__(self):
         super().__init__()
-        self.auth_service = AuthService()
+        self.user_session_service = UserSessionService()
+        self.user_api_service = UserApiService()
 
     def login(self, phone: str, password: str):
         payload = UserLoginModel(phone=phone, password=password)
-        asyncio.create_task(self._login_task(payload))
 
-    async def _login_task(self, payload: UserLoginModel):
-        try:
-            ok, data = await self.auth_service.auth(payload)
-            if ok:
-                self.emit_success()
-            else:
-                self.emit_error(f"Ошибка входа: {data}")
-        except Exception as e:
-            self.emit_error(f"Ошибка сервера: {str(e)}")
+        auth_callback: Callable[[UserAuthResponseModel], None] = (
+            lambda data: self.user_session_service.auth(data)
+        )
+
+        self._run_async_task(
+            self.user_api_service.login_request,
+            payload,
+            success_callback=auth_callback,
+            error_prefix="Ошибка авторизации",
+        )
