@@ -1,3 +1,17 @@
+[tool.black]
+line-length = 88
+target-version = ['py310']  # Версия Python проекта
+include = '\.pyi?$'    # Какие файлы форматировать (.py и .pyi)
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
 [project]
 name = "ozon-ui"
 version = "0.1.0"
@@ -23,8 +37,11 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 python = ">=3.13,<3.15"
 
+[tool.poetry]
+packages = [{ include = "app" }]
 
 [dependency-groups]
 dev = [
+    "black (>=26.5.1,<27.0.0)",
     "pyinstaller (>=6.17.0,<7.0.0)"
 ]
