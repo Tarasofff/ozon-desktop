@@ -1,8 +1,8 @@
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class AppRoutes(StrEnum):
-    START = "start"
-    LOGIN = "login"
-    REGISTRATION = "register"
-    PATIENTS = "patients"
+    START = auto()
+    LOGIN = auto()
+    REGISTRATION = auto()
+    PATIENTS = auto()

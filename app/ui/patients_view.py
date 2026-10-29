@@ -1,7 +1,9 @@
-from models.patient_model import PatientModel
+from datetime import date
+
 from ui.components import TableColumn, BaseTable
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTableView, QPushButton
 from PySide6.QtCore import Qt
+from app.schemas import PatientBase
 
 
 class PatientsView(QWidget):
@@ -61,27 +63,27 @@ class PatientsView(QWidget):
     def _connect_signals(self):
         self.refresh_button.clicked.connect(self.load_patients)
 
-    def set_patients(self, patients: list[PatientModel]):
+    def set_patients(self, patients: list[PatientBase]):
         self.model.set_data(patients)
 
     def load_patients(self):
         example_patients = [
-            PatientModel(
+            PatientBase(
                 first_name="Иван",
-                middle_name="Иванович",
-                last_name="Иванов",
+                last_name="Иванович",
+                patronymic="Иванов",
                 phone="123456789",
-                date_of_birth="2000.03.13",
+                date_of_birth=date(1990, 1, 1),
                 email="ivan@mail.com",
                 is_active=True,
                 notes="Нужно проверить",
             ),
-            PatientModel(
+            PatientBase(
                 first_name="Мария",
-                middle_name="Сергеевна",
-                last_name="Петрова",
+                last_name="Сергеевна",
+                patronymic="Петрова",
                 phone="987654321",
-                date_of_birth="2000.03.13",
+                date_of_birth=date(1992, 2, 3),
                 email=None,
                 is_active=False,
                 notes=None,

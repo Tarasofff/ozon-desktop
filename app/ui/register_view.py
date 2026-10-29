@@ -1,4 +1,3 @@
-from typing import List
 from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
@@ -6,12 +5,14 @@ from PySide6.QtWidgets import (
     QDateEdit,
     QComboBox,
 )
-from models import RoleEntityModel
+from app.core.constants.user_role import UserRole
 from viewmodels import RegisterViewModel
 from ui.components import FormContainer, BackButton
 from PySide6.QtCore import Qt, QDate
 import re
 
+
+# TODO basevieew, beautify
 class RegisterView(FormContainer):
     def __init__(self):
         super().__init__()
@@ -49,6 +50,8 @@ class RegisterView(FormContainer):
 
         self.role_selector = QComboBox()
         self.role_selector.setPlaceholderText("Выберите роль")
+        for role in UserRole:
+            self.role_selector.addItem(role.value, role)
 
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Пароль")
@@ -70,21 +73,12 @@ class RegisterView(FormContainer):
         self.add(self.error_label)
         self.add(self.back_button)
 
-    def _on_roles_loaded(self, roles: List[RoleEntityModel]):
-        self.role_selector.clear()
-
-        for role in roles:
-            self.role_selector.addItem(role.name, role.id)
-
     def _connect_signals(self):
         self.register_button.clicked.connect(self._handle_register)
 
         self.vm.success.connect(self.on_success)
         self.vm.error.connect(self.on_error)
 
-        self.vm.roles_list.connect(self._on_roles_loaded)
-
-    # TODO
     def _validate_inputs(self) -> bool:
         first_name = self.first_name_input.text().strip()
         middle_name = self.middle_name_input.text().strip()
@@ -92,7 +86,7 @@ class RegisterView(FormContainer):
         email = self.email_input.text().strip()
         phone = self.phone_input.text().strip()
         password = self.password_input.text()
-        role_id = self.role_selector.currentData()
+        role = self.role_selector.currentData()
 
         # Проверка имени, фамилии, отчества (только буквы)
         name_pattern = re.compile(r"^[A-Za-zА-Яа-яЁё]+$")
@@ -128,7 +122,7 @@ class RegisterView(FormContainer):
             return False
 
         # Проверка роли
-        if role_id is None:
+        if role is None:
             self.on_error("Выберите роль")
             return False
 
@@ -147,7 +141,7 @@ class RegisterView(FormContainer):
         phone = self.phone_input.text()
         password = self.password_input.text()
         dob = self.date_of_birth_input.text()
-        role_id = self.role_selector.currentData()
+        role = self.role_selector.currentData()
 
         self.vm.register(
             first_name,
@@ -157,5 +151,5 @@ class RegisterView(FormContainer):
             phone,
             password,
             dob,
-            role_id,
+            role,
         )

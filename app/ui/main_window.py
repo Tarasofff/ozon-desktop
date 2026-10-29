@@ -68,9 +68,11 @@ class MainWindow(QMainWindow):
             lambda: self.router.navigate(AppRoutes.PATIENTS)
         )
 
+    # TODO
     def _on_route_changed(self, route: str) -> None:
-        if route == AppRoutes.REGISTRATION:
-            self.register.vm.load_roles()
+        # if route == AppRoutes.REGISTRATION:
+        #     self.register.vm.load_roles()
+        pass
 
     def _on_login_success(self):
         self.patients.load_patients()
