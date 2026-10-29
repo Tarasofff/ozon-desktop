@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 from ui import MainWindow
 from pathlib import Path
+from core.exception_handler import setup_exception_handler
 
 
 def load_styles(app: QApplication):
@@ -17,6 +18,8 @@ def load_styles(app: QApplication):
 
 def main():
     app = QApplication(sys.argv)
+
+    setup_exception_handler()
 
     load_styles(app)
 

@@ -1,5 +1,9 @@
 from typing import Callable
 from PySide6.QtCore import Signal
+from app.core.constants.user_role import UserRole
+from app.schemas.doctor import DoctorBase
+from app.schemas.nurse import NurseBase
+from app.schemas.user import UserAccount, UserBase, UserCreate
 from services.user.session.user_session_service import UserSessionService
 from services.user.api.user_api_service import UserApiService
 from .base_viewmodel import BaseViewModel
@@ -62,36 +66,11 @@ from .base_viewmodel import BaseViewModel
 
 
 class RegisterViewModel(BaseViewModel):
-    roles_list = Signal(list)
-
     def __init__(self):
         super().__init__()
         self.user_api_service = UserApiService()
         self.user_session_service = UserSessionService()
 
-    def register(
-        self,
-        first_name: str,
-        middle_name: str,
-        last_name: str,
-        email: str,
-        phone: str,
-        password: str,
-        date_of_birth: str,
-        role: str,
-    ):
-        print(
-            {
-                "first_name": first_name,
-                "middle_name": middle_name,
-                "last_name": last_name,
-                "email": email,
-                "phone": phone,
-                "password": password,
-                "date_of_birth": date_of_birth,
-                "role": role,
-            }
-        )
-
-    def load_roles(self):
+    # TODO: Implement registration logic
+    def registration(self, registration_data: UserCreate):
         pass

@@ -22,7 +22,7 @@ class UserBase(BaseSchema):
     phone: PhoneStr
     email: EmailStr | None = None
     date_of_birth: date
-    is_active: bool = True
+    is_active: bool
     hospital_id: int
     role: UserRole
 

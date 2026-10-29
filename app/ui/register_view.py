@@ -1,3 +1,5 @@
+import re
+from datetime import date
 from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
@@ -5,17 +7,28 @@ from PySide6.QtWidgets import (
     QDateEdit,
     QComboBox,
 )
-from app.core.constants.user_role import UserRole
+from app.core.constants import UserRole
+from app.schemas.doctor import DoctorCreate
+from app.schemas.nurse import NurseCreate
+from app.schemas.user import UserAccount, UserCreate
 from viewmodels import RegisterViewModel
 from ui.components import FormContainer, BackButton
 from PySide6.QtCore import Qt, QDate
-import re
+
+PROFILE_SCHEMAS = {
+    UserRole.NURSE: NurseCreate,
+    UserRole.DOCTOR: DoctorCreate,
+}
 
 
-# TODO basevieew, beautify
+# TODO: Implement the registration logic in the RegisterViewModel and connect it to the UI.
 class RegisterView(FormContainer):
+    NAME_PATTERN = re.compile(r"^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'-]+$")
+    EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
     def __init__(self):
         super().__init__()
+
         self.vm = RegisterViewModel()
         self.back_button = BackButton()
 
@@ -31,11 +44,11 @@ class RegisterView(FormContainer):
         self.first_name_input = QLineEdit()
         self.first_name_input.setPlaceholderText("Имя")
 
-        self.middle_name_input = QLineEdit()
-        self.middle_name_input.setPlaceholderText("Фамилия")
-
         self.last_name_input = QLineEdit()
-        self.last_name_input.setPlaceholderText("Отчество")
+        self.last_name_input.setPlaceholderText("Фамилия")
+
+        self.patronymic_input = QLineEdit()
+        self.patronymic_input.setPlaceholderText("Отчество")
 
         self.email_input = QLineEdit()
         self.email_input.setPlaceholderText("Email")
@@ -47,9 +60,11 @@ class RegisterView(FormContainer):
         self.date_of_birth_input.setDisplayFormat("yyyy-MM-dd")
         self.date_of_birth_input.setCalendarPopup(True)
         self.date_of_birth_input.setDate(QDate.currentDate())
+        self.date_of_birth_input.setMaximumDate(QDate.currentDate())
 
         self.role_selector = QComboBox()
-        self.role_selector.setPlaceholderText("Выберите роль")
+        self.role_selector.addItem("Выберите роль", None)
+
         for role in UserRole:
             self.role_selector.addItem(role.value, role)
 
@@ -57,13 +72,13 @@ class RegisterView(FormContainer):
         self.password_input.setPlaceholderText("Пароль")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        self.register_button = QPushButton("Зарегестрироваться")
+        self.register_button = QPushButton("Зарегистрироваться")
 
     def _setup_layout(self):
         self.add(self.title_label)
         self.add(self.first_name_input)
-        self.add(self.middle_name_input)
         self.add(self.last_name_input)
+        self.add(self.patronymic_input)
         self.add(self.email_input)
         self.add(self.phone_input)
         self.add(self.date_of_birth_input)
@@ -79,77 +94,81 @@ class RegisterView(FormContainer):
         self.vm.success.connect(self.on_success)
         self.vm.error.connect(self.on_error)
 
-    def _validate_inputs(self) -> bool:
+    def _get_validated_user_account(self) -> UserAccount | None:
         first_name = self.first_name_input.text().strip()
-        middle_name = self.middle_name_input.text().strip()
         last_name = self.last_name_input.text().strip()
+        patronymic = self.patronymic_input.text().strip()
         email = self.email_input.text().strip()
         phone = self.phone_input.text().strip()
         password = self.password_input.text()
-        role = self.role_selector.currentData()
+        role_value = self.role_selector.currentData()
 
-        # Проверка имени, фамилии, отчества (только буквы)
-        name_pattern = re.compile(r"^[A-Za-zА-Яа-яЁё]+$")
-        for field_name, value in [
+        qdate = self.date_of_birth_input.date()
+        date_of_birth = date(
+            qdate.year(),
+            qdate.month(),
+            qdate.day(),
+        )
+
+        # TODO
+        names = (
             ("Имя", first_name),
-            ("Фамилия", middle_name),
-            ("Отчество", last_name),
-        ]:
+            ("Фамилия", last_name),
+            ("Отчество", patronymic),
+        )
+
+        for field_name, value in names:
             if not value:
-                self.on_error(f"{field_name} обязательное поле")
-                return False
-            if not name_pattern.match(value):
-                self.on_error(f"{field_name} должно содержать только буквы")
-                return False
+                self.on_error(f"{field_name} — обязательное поле")
+                return None
 
-        # Проверка email (простейший regex)
-        email_pattern = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w+$")
-        if email and not email_pattern.match(email):
+            if not self.NAME_PATTERN.fullmatch(value):
+                self.on_error(f"{field_name}: проверьте введённые символы")
+                return None
+
+        if email and not self.EMAIL_PATTERN.fullmatch(email):
             self.on_error("Неверный формат email")
-            return False
+            return None
 
-        # Проверка телефона (только цифры)
         if not phone:
             self.on_error("Телефон обязателен")
-            return False
-        if not phone.isdigit():
-            self.on_error("Телефон должен содержать только цифры")
-            return False
+            return None
 
-        # Проверка пароля
+        normalized_phone = phone.replace(" ", "").replace("-", "")
+
+        if not re.fullmatch(r"\+?\d{10,15}", normalized_phone):
+            self.on_error("Проверьте формат телефона")
+            return None
+
         if not password:
             self.on_error("Пароль обязателен")
-            return False
+            return None
 
-        # Проверка роли
-        if role is None:
+        if role_value is None:
             self.on_error("Выберите роль")
-            return False
+            return None
 
-        # Все проверки пройдены
-        self.on_success()
-        return True
+        return UserAccount(
+            first_name=first_name,
+            last_name=last_name,
+            patronymic=patronymic,
+            email=email or None,
+            is_active=True,
+            hospital_id=1,  # TODO: определить больницу
+            phone=normalized_phone,
+            password=password,
+            date_of_birth=date_of_birth,
+            role=UserRole(role_value),
+        )
 
     def _handle_register(self):
-        if not self._validate_inputs():
+        user_account = self._get_validated_user_account()
+
+        if user_account is None:
             return
 
-        first_name = self.first_name_input.text()
-        middle_name = self.middle_name_input.text()
-        last_name = self.last_name_input.text()
-        email = self.email_input.text()
-        phone = self.phone_input.text()
-        password = self.password_input.text()
-        dob = self.date_of_birth_input.text()
-        role = self.role_selector.currentData()
+        profile_schema = PROFILE_SCHEMAS[user_account.role]
 
-        self.vm.register(
-            first_name,
-            middle_name,
-            last_name,
-            email,
-            phone,
-            password,
-            dob,
-            role,
-        )
+        registration_data = UserCreate(user=user_account, profile=profile_schema())
+
+        self.vm.registration(registration_data)
