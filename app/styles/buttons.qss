@@ -1,8 +1,11 @@
+/* Кнопки */
 QPushButton {
     background-color: #2d7ff9;
     color: white;
+    border: none;
     border-radius: 10px;
     padding: 10px 18px;
+    min-height: 24px;
     font-size: 14px;
 }
 

@@ -7,8 +7,4 @@ class BaseButton(QPushButton):
 
     def __init__(self, title: str):
         super().__init__(title)
-        self.setObjectName("btn")
         self.clicked.connect(self.btn_clicked)
-
-
-

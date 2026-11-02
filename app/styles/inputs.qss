@@ -1,41 +1,64 @@
+/* Текстовые поля */
 QLineEdit {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
+    background-color: #1e1e1e;
+    color: #fcf9f9;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    padding: 8px 10px;
+    min-height: 24px;
+}
+
+QLineEdit::placeholder {
+    color: #111010;
 }
 
 QLineEdit:focus {
     border: 1px solid #2d7ff9;
+    background-color: #1e1e1e;
 }
 
 QLineEdit[error="true"] {
     border: 1px solid #e53935;
     background-color: #130101;
+    color: #ffffff;
 }
 
 QLineEdit[error="true"]:focus {
     border: 1px solid #e53935;
 }
 
-QDateEdit {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
-}
-
 QDateEdit:focus {
     border: 1px solid #2d7ff9;
 }
 
+QDateEdit,
 QComboBox {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
+    background-color: #1e1e1e;
+    color: #faf9f9;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    padding: 8px 10px;
+    min-height: 24px;
 }
 
 QComboBox:focus {
     border: 1px solid #2d7ff9;
+}
+
+/* Выпадающий список */
+QComboBox QAbstractItemView {
+    background-color: #1e1e1e;
+    color: white;
+    selection-background-color: #2d7ff9;
+}
+
+/* Прозрачный фон области прокрутки */
+QScrollArea#formScrollArea {
+    background: transparent;
+    border: none;
+}
+
+/* Прозрачный фон содержимого формы */
+QWidget#formContent {
+    background: transparent;
 }
