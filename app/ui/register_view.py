@@ -1,7 +1,6 @@
 import re
 from datetime import date
 from PySide6.QtWidgets import (
-    QLabel,
     QLineEdit,
     QPushButton,
     QDateEdit,
@@ -12,35 +11,29 @@ from app.schemas.doctor import DoctorCreate
 from app.schemas.nurse import NurseCreate
 from app.schemas.user import UserAccount, UserCreate
 from viewmodels import RegisterViewModel
-from ui.components import FormContainer, BackButton
-from PySide6.QtCore import Qt, QDate
+from ui.components import FormContainer
+from PySide6.QtCore import QDate
 
-PROFILE_SCHEMAS = {
+CREATE_PROFILE_SCHEMAS = {
     UserRole.NURSE: NurseCreate,
     UserRole.DOCTOR: DoctorCreate,
 }
 
 
-# TODO: Implement the registration logic in the RegisterViewModel and connect it to the UI.
 class RegisterView(FormContainer):
     NAME_PATTERN = re.compile(r"^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'-]+$")
     EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
     def __init__(self):
-        super().__init__()
+        super().__init__("Регистрация")
 
         self.vm = RegisterViewModel()
-        self.back_button = BackButton()
 
         self._create_widgets()
         self._setup_layout()
         self._connect_signals()
 
     def _create_widgets(self):
-        self.title_label = QLabel("Регистрация")
-        self.title_label.setObjectName("title")
-        self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
         self.first_name_input = QLineEdit()
         self.first_name_input.setPlaceholderText("Имя")
 
@@ -75,7 +68,6 @@ class RegisterView(FormContainer):
         self.register_button = QPushButton("Зарегистрироваться")
 
     def _setup_layout(self):
-        self.add(self.title_label)
         self.add(self.first_name_input)
         self.add(self.last_name_input)
         self.add(self.patronymic_input)
@@ -85,14 +77,9 @@ class RegisterView(FormContainer):
         self.add(self.role_selector)
         self.add(self.password_input)
         self.add(self.register_button)
-        self.add(self.error_label)
-        self.add(self.back_button)
 
     def _connect_signals(self):
         self.register_button.clicked.connect(self._handle_register)
-
-        self.vm.success.connect(self.on_success)
-        self.vm.error.connect(self.on_error)
 
     def _get_validated_user_account(self) -> UserAccount | None:
         first_name = self.first_name_input.text().strip()
@@ -154,7 +141,6 @@ class RegisterView(FormContainer):
             patronymic=patronymic,
             email=email or None,
             is_active=True,
-            hospital_id=1,  # TODO: определить больницу
             phone=normalized_phone,
             password=password,
             date_of_birth=date_of_birth,
@@ -167,7 +153,7 @@ class RegisterView(FormContainer):
         if user_account is None:
             return
 
-        profile_schema = PROFILE_SCHEMAS[user_account.role]
+        profile_schema = CREATE_PROFILE_SCHEMAS[user_account.role]
 
         registration_data = UserCreate(user=user_account, profile=profile_schema())
 

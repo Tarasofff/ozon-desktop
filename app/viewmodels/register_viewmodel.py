@@ -73,4 +73,5 @@ class RegisterViewModel(BaseViewModel):
 
     # TODO: Implement registration logic
     def registration(self, registration_data: UserCreate):
+        print("Registration data:", registration_data.model_dump_json())
         pass

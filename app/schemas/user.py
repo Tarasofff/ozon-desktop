@@ -23,7 +23,6 @@ class UserBase(BaseSchema):
     email: EmailStr | None = None
     date_of_birth: date
     is_active: bool
-    hospital_id: int
     role: UserRole
 
 

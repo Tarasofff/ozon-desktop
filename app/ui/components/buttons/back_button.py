@@ -9,4 +9,3 @@ class BackButton(QPushButton):
         super().__init__("← Назад")
         self.setObjectName("back")
         self.clicked.connect(self.back_clicked)
-    

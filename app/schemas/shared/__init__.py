@@ -4,3 +4,4 @@ from .base_read import BaseRead
 from .base_create import BaseCreate
 from .base_schema import BaseSchema
 from .base_timestamp import BaseTimestampedRead
+from .view_model_protocol import ViewModelProtocol

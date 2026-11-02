@@ -46,8 +46,6 @@ class MainWindow(QMainWindow):
         self.router = Router(self.stack)
 
     def _setup_navigation(self) -> None:
-        self.router.route_changed.connect(self._on_route_changed)
-
         self.start.vm.show_login.connect(lambda: self.router.navigate(AppRoutes.LOGIN))
         self.start.vm.show_register.connect(
             lambda: self.router.navigate(AppRoutes.REGISTRATION)
@@ -67,12 +65,6 @@ class MainWindow(QMainWindow):
         self.register.vm.success.connect(
             lambda: self.router.navigate(AppRoutes.PATIENTS)
         )
-
-    # TODO
-    def _on_route_changed(self, route: str) -> None:
-        # if route == AppRoutes.REGISTRATION:
-        #     self.register.vm.load_roles()
-        pass
 
     def _on_login_success(self):
         self.patients.load_patients()
