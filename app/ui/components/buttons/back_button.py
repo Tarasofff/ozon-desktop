@@ -1,11 +1,6 @@
-from PySide6.QtWidgets import QPushButton
-from PySide6.QtCore import Signal
+from ui.components.buttons.base_button import BaseButton
 
 
-class BackButton(QPushButton):
-    back_clicked = Signal()
-
+class BackButton(BaseButton):
     def __init__(self):
         super().__init__("← Назад")
-        self.setObjectName("back")
-        self.clicked.connect(self.back_clicked)

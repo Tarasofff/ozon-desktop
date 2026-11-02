@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
-from ui.patients_view import PatientsView
+from infrastructure.navigation.routes import AppRoutes
+from ui.views.patients.patients_view import PatientsView
+from ui.views.registration.register_view import RegisterView
 from core import app_config
-from core.constants import AppRoutes
-from infrastructure.router.router import Router
-from .start_view import StartView
-from .login_view import LoginView
-from .register_view import RegisterView
+from infrastructure.navigation.router import Router
 from PySide6.QtGui import QIcon
+from ui.views.start.start_view import StartView
+from ui.views.login.login_view import LoginView
 
 
 class MainWindow(QMainWindow):
@@ -51,20 +51,15 @@ class MainWindow(QMainWindow):
             lambda: self.router.navigate(AppRoutes.REGISTRATION)
         )
 
-        self.login.back_button.back_clicked.connect(
+        self.login.back_button.btn_clicked.connect(
             lambda: self.router.navigate(AppRoutes.START)
         )
-        self.register.back_button.back_clicked.connect(
+        self.register.back_button.btn_clicked.connect(
             lambda: self.router.navigate(AppRoutes.START)
         )
 
-        self.login.vm.success.connect(lambda: self._on_login_success())
-        self.register.vm.success.connect(lambda: self._on_login_success())
-
-        self.login.vm.success.connect(lambda: self.router.navigate(AppRoutes.PATIENTS))
-        self.register.vm.success.connect(
-            lambda: self.router.navigate(AppRoutes.PATIENTS)
-        )
+        self.login.vm.success.connect(self._on_login_success)
+        self.register.vm.success.connect(self._on_login_success)
 
     def _on_login_success(self):
         self.patients.load_patients()

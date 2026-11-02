@@ -1,9 +1,9 @@
 import sys, asyncio
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
-from ui import MainWindow
 from pathlib import Path
 from core.exception_handler import setup_exception_handler
+from main_window import MainWindow
 
 
 def load_styles(app: QApplication):

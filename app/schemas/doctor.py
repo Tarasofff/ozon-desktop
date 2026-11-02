@@ -1,5 +1,5 @@
-from app.schemas.shared import BaseCreate, BaseRead
-from app.schemas.shared.base_schema import BaseSchema
+from schemas.shared import BaseCreate, BaseRead
+from schemas.shared.base_schema import BaseSchema
 
 
 class DoctorBase(BaseSchema):

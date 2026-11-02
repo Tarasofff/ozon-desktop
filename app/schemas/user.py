@@ -1,13 +1,13 @@
 from datetime import date
 from pydantic import EmailStr
-from app.core.constants.user_role import UserRole
-from app.schemas.doctor import DoctorCreate
-from app.schemas.nurse import NurseCreate
-from app.schemas.shared.base_create import BaseCreate
-from app.schemas.shared.base_read import BaseRead
-from app.schemas.shared.base_schema import BaseSchema
-from app.schemas.shared.types.auth import PasswordStr
-from app.schemas.shared.types.identity import (
+from core.constants.user_role import UserRole
+from schemas.doctor import DoctorCreate
+from schemas.nurse import NurseCreate
+from schemas.shared.base_create import BaseCreate
+from schemas.shared.base_read import BaseRead
+from schemas.shared.base_schema import BaseSchema
+from schemas.shared.types.auth import PasswordStr
+from schemas.shared.types.identity import (
     FirstNameStr,
     LastNameStr,
     PatronymicStr,

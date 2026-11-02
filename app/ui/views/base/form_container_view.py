@@ -5,7 +5,7 @@ from ui.components.buttons import BackButton
 from schemas.shared import ViewModelProtocol
 
 
-class FormContainer(QWidget):
+class FormContainerView(QWidget):
     def __init__(self, title: str):
         super().__init__()
 
@@ -32,19 +32,20 @@ class FormContainer(QWidget):
         max_height: Optional[int] = None,
         min_height: Optional[int] = None,
     ) -> None:
-        if max_width:
+        if max_width is not None:
             widget.setMaximumWidth(max_width)
 
-        if min_width:
-            widget.setMaximumHeight(min_width)
+        if min_width is not None:
+            widget.setMinimumWidth(min_width)
 
-        if max_height:
+        if max_height is not None:
             widget.setMaximumHeight(max_height)
 
-        if min_height:
-            widget.setMaximumHeight(min_height)
+        if min_height is not None:
+            widget.setMinimumHeight(min_height)
 
-        self.main_layout.addWidget(widget)
+        index = self.main_layout.indexOf(self.back_button)
+        self.main_layout.insertWidget(index, widget)
 
     def on_success(self, message: str = ""):
         self.error_label.setText(message)

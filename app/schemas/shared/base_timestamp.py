@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.schemas.shared.base_read import BaseRead
+from schemas.shared.base_read import BaseRead
 
 
 class BaseTimestampedRead(BaseRead):

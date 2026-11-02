@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import TypedDict
-from app.schemas.doctor import DoctorRead
-from app.schemas.nurse import NurseRead
-from app.schemas.shared.base_schema import BaseSchema
-from app.schemas.shared.types import PasswordStr, PhoneStr
-from app.schemas.user import UserRead
+from schemas.doctor import DoctorRead
+from schemas.nurse import NurseRead
+from schemas.shared.base_schema import BaseSchema
+from schemas.shared.types import PasswordStr, PhoneStr
+from schemas.user import UserRead
 
 
 class AccessTokenPayload(TypedDict):

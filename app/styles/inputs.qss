@@ -9,6 +9,15 @@ QLineEdit:focus {
     border: 1px solid #2d7ff9;
 }
 
+QLineEdit[error="true"] {
+    border: 1px solid #e53935;
+    background-color: #130101;
+}
+
+QLineEdit[error="true"]:focus {
+    border: 1px solid #e53935;
+}
+
 QDateEdit {
     border: 1px solid #ccc;
     border-radius: 8px;

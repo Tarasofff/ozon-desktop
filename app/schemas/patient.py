@@ -2,7 +2,7 @@ from datetime import date
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from .shared import BaseRead, PaginatedResponse, BaseCreate
-from app.schemas.shared.types import (
+from schemas.shared.types import (
     FirstNameStr,
     LastNameStr,
     PatronymicStr,

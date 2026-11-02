@@ -1,4 +1,4 @@
-from app.schemas.shared.base_schema import BaseSchema
+from schemas.shared.base_schema import BaseSchema
 
 
 class BaseEntity(BaseSchema):
