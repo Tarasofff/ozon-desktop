@@ -1,7 +1,8 @@
 from datetime import date
 from pydantic import EmailStr
+from schemas.doctor import DoctorCreate
+from schemas.nurse import NurseCreate
 from core.constants import UserRole
-from schemas import NurseCreate, DoctorCreate
 from schemas.shared import BaseSchema, BaseCreate, BaseEntity
 from schemas.shared.types.auth import PasswordStr
 from schemas.shared.types import (
