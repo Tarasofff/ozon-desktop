@@ -1,7 +1,7 @@
 from datetime import datetime
-from schemas.shared.base_read import BaseRead
+from schemas.shared import BaseSchema
 
 
-class BaseTimestampedRead(BaseRead):
+class BaseTimestampedRead(BaseSchema):
     created_at: datetime
     updated_at: datetime

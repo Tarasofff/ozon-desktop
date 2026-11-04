@@ -1,15 +1,19 @@
-from typing import Any, Awaitable, Callable, Optional
+from typing import Any, Awaitable, Callable, TypeVar
 from PySide6.QtCore import QObject, Signal
 import asyncio
+import inspect
+
+T = TypeVar("T")
+
 
 class BaseViewModel(QObject):
     _success = Signal()
     _error = Signal(str)
 
-    def emit_success(self):
+    def emit_success(self) -> None:
         self._success.emit()
 
-    def emit_error(self, msg: str):
+    def emit_error(self, msg: str) -> None:
         self._error.emit(msg)
 
     @property
@@ -20,48 +24,39 @@ class BaseViewModel(QObject):
     def error(self):
         return self._error
 
-    async def _async_api_request_task(
+    async def _handle_request(
         self,
-        request_func: Callable[..., Awaitable[tuple[bool, Any]]],
+        request_func: Callable[..., Awaitable[T]],
         *args: Any,
-        success_callback: Optional[Callable[[Any], None]],
-        error_prefix: str,
-    ):
-        """
-        Универсальный обработчик асинхронных задач.
-
-        request_func: async функция, возвращающая (ok: bool, data)
-        args: аргументы для request_func
-        success_callback: функция, вызываемая с data при успехе
-        error_prefix: текст для ошибки
-        success_msg: текст для успешной операции
-        """
-        try:
-            ok, data = await request_func(*args)
-            if ok:
-                if success_callback:
-                    if asyncio.iscoroutinefunction(success_callback):
-                        await success_callback(data)
-                    else:
-                        success_callback(data)
-                    self.emit_success()
-            else:
-                self.emit_error(f"{error_prefix}: {data}")
-        except Exception as e:
-            self.emit_error(f"{error_prefix}: {str(e)}")
-
-    def _run_async_task(
-        self,
-        request_func: Callable[..., Awaitable[tuple[bool, Any]]],
-        *args: Any,
-        success_callback: Optional[Callable[[Any], None]] = None,
+        success_callback: Callable[[T], None | Awaitable[None]] | None = None,
         error_prefix: str = "Ошибка",
-    ):
-        """
-        Синхронная обёртка для запуска асинхронной задачи через asyncio.create_task.
-        """
-        asyncio.create_task(
-            self._async_api_request_task(
+    ) -> None:
+        try:
+            result = await request_func(*args)
+
+            if success_callback is not None:
+                callback_result = success_callback(result)
+
+                if inspect.isawaitable(callback_result):
+                    await callback_result
+
+            self.emit_success()
+
+        except asyncio.CancelledError:
+            raise
+
+        except Exception as e:
+            self.emit_error(f"{error_prefix}: {e}")
+
+    def run_async_task(
+        self,
+        request_func: Callable[..., Awaitable[T]],
+        *args: Any,
+        success_callback: Callable[[T], None | Awaitable[None]] | None = None,
+        error_prefix: str = "Ошибка",
+    ) -> asyncio.Task[None]:
+        return asyncio.create_task(
+            self._handle_request(
                 request_func,
                 *args,
                 success_callback=success_callback,

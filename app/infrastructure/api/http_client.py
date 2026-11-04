@@ -1,8 +1,8 @@
 import httpx
 from infrastructure.api.middleware import add_auth_header
-from app.core.config.app_config import app_config
+from core.config.app_config import app_config
 
-http = httpx.AsyncClient(
+http_client = httpx.AsyncClient(
     base_url=app_config.api_url_v1,
     timeout=30.0,
     headers={

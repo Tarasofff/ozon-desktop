@@ -1,5 +1,4 @@
-from schemas.shared import BaseCreate, BaseRead
-from schemas.shared.base_schema import BaseSchema
+from schemas.shared import BaseCreate, BaseEntity, BaseSchema
 
 
 class DoctorBase(BaseSchema):
@@ -10,5 +9,5 @@ class DoctorCreate(BaseCreate, DoctorBase):
     pass
 
 
-class DoctorRead(BaseRead, DoctorBase):
+class DoctorRead(BaseEntity, DoctorBase):
     pass

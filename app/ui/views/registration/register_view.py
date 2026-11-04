@@ -62,7 +62,7 @@ class RegisterView(FormContainerView):
         self.add(self.register_button)
 
     def _connect_signals(self):
-        self.register_button.clicked.connect(self._handle_register)
+        self.register_button.clicked.connect(self._handle_registration)
 
     def _get_validated_user_account(self) -> UserAccount | None:
         if (
@@ -93,7 +93,7 @@ class RegisterView(FormContainerView):
             role=UserRole(role_value),
         )
 
-    def _handle_register(self):
+    def _handle_registration(self):
         user_account = self._get_validated_user_account()
 
         if user_account is None:

@@ -20,3 +20,7 @@ class AuthApi(BaseApi):
     def __init__(self):
         self.INDEX = f"{self._PREFIX}/auth"
         self.LOGIN = f"{self.INDEX}/login"
+
+
+user_api = UserApi()
+auth_api = AuthApi()

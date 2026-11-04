@@ -1,20 +1,8 @@
-from datetime import datetime
-from typing import TypedDict
 from schemas.doctor import DoctorRead
 from schemas.nurse import NurseRead
-from schemas.shared.base_schema import BaseSchema
+from schemas.shared import BaseCreate, BaseSchema
 from schemas.shared.types import PasswordStr, PhoneStr
 from schemas.user import UserRead
-
-
-class AccessTokenPayload(TypedDict):
-    user_id: int
-    user_role: str
-
-
-class EncodedAccessTokenPayload(AccessTokenPayload):
-    exp: datetime
-    iat: datetime
 
 
 class AccessToken(BaseSchema):
@@ -22,7 +10,7 @@ class AccessToken(BaseSchema):
     token_type: str
 
 
-class AuthPayload(BaseSchema):
+class AuthPayload(BaseCreate):
     phone: PhoneStr
     password: PasswordStr
 

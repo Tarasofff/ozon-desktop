@@ -1,13 +1,10 @@
 from datetime import date
 from pydantic import EmailStr
-from core.constants.user_role import UserRole
-from schemas.doctor import DoctorCreate
-from schemas.nurse import NurseCreate
-from schemas.shared.base_create import BaseCreate
-from schemas.shared.base_read import BaseRead
-from schemas.shared.base_schema import BaseSchema
+from core.constants import UserRole
+from schemas import NurseCreate, DoctorCreate
+from schemas.shared import BaseSchema, BaseCreate, BaseEntity
 from schemas.shared.types.auth import PasswordStr
-from schemas.shared.types.user_identity import (
+from schemas.shared.types import (
     FirstNameStr,
     LastNameStr,
     PatronymicStr,
@@ -35,5 +32,9 @@ class UserCreate(BaseCreate):
     profile: DoctorCreate | NurseCreate
 
 
-class UserRead(BaseRead, UserBase):
+class UserRead(BaseEntity, UserBase):
     pass
+
+
+class UserSession(UserBase):
+    id: int
