@@ -1,12 +1,12 @@
-from .user import UserBase, UserAccount, UserCreate, UserRead
-from .patient import (
+from schemas.user import UserBase, UserAccount, UserCreate, UserRead
+from schemas.patient import (
     PatientBase,
     PatientCreate,
     PatientRead,
     PaginatedPatientsResponse,
     PatientDiagnose,
 )
-from .auth import (
+from schemas.auth import (
     AccessTokenPayload,
     EncodedAccessTokenPayload,
     AccessToken,

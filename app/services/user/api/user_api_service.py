@@ -1,6 +1,3 @@
-from core.constants import user_api
-from infrastructure.http.client import http
-
 # class UserApiService:
 
 #     async def login_request(
@@ -26,8 +23,8 @@ from infrastructure.http.client import http
 
 class UserApiService:
 
-    async def login_request(self, data: UserLoginModel):
+    async def login_request(self, data):
         pass
 
-    async def registration_request(self, data: UserRegistrationModel):
+    async def registration_request(self, data):
         pass

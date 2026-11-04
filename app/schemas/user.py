@@ -7,7 +7,7 @@ from schemas.shared.base_create import BaseCreate
 from schemas.shared.base_read import BaseRead
 from schemas.shared.base_schema import BaseSchema
 from schemas.shared.types.auth import PasswordStr
-from schemas.shared.types.identity import (
+from schemas.shared.types.user_identity import (
     FirstNameStr,
     LastNameStr,
     PatronymicStr,

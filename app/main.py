@@ -2,7 +2,7 @@ import sys, asyncio
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 from pathlib import Path
-from core.exception_handler import setup_exception_handler
+from app.core.handlers.global_exception_handler import setup_exception_handler
 from main_window import MainWindow
 
 
