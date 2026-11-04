@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from ui.components.buttons import BackButton
-from schemas.shared import ViewModelProtocol
 
 
 class FormContainerView(QWidget):
@@ -44,9 +43,6 @@ class FormContainerView(QWidget):
         self.main_layout.addWidget(self.title_label)
         self.main_layout.addWidget(self.scroll_area, 1)
 
-        self.error_label = QLabel()
-        self.error_label.setObjectName("error")
-
         self._setup_default_layout()
 
     def add(
@@ -74,16 +70,5 @@ class FormContainerView(QWidget):
             index, widget, alignment=Qt.AlignmentFlag.AlignHCenter
         )
 
-    def on_success(self, message: str = ""):
-        self.error_label.setText(message)
-
-    def on_error(self, message: str):
-        self.error_label.setText(message)
-
     def _setup_default_layout(self) -> None:
-        self.add(self.error_label)
         self.add(self.back_button)
-
-    def connect_viewmodel(self, vm: ViewModelProtocol) -> None:
-        vm.success.connect(self.on_success)
-        vm.error.connect(self.on_error)

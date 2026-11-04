@@ -2,6 +2,7 @@ from typing import Any, Awaitable, Callable, TypeVar
 from PySide6.QtCore import QObject, Signal
 import asyncio
 import inspect
+from core.handlers.error_handler import handle_error
 
 T = TypeVar("T")
 
@@ -47,6 +48,7 @@ class BaseViewModel(QObject):
 
         except Exception as e:
             self.emit_error(f"{error_prefix}: {e}")
+            handle_error(e, error_prefix)
 
     def run_async_task(
         self,

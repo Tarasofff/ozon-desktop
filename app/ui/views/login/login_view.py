@@ -44,4 +44,6 @@ class LoginView(FormContainerView):
         if auth_payload is None:
             return
 
-        self.vm.login(auth_payload.phone, auth_payload.password)
+        self.vm.login(
+            AuthPayload(phone=auth_payload.phone, password=auth_payload.password)
+        )

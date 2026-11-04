@@ -1,5 +1,5 @@
 from schemas.auth import AuthResponse
-from schemas.user import UserSession
+from schemas.user import UserRead
 from infrastructure.storage.token_storage import (
     save_token,
     delete_token,
@@ -19,10 +19,11 @@ class SessionService:
                 data.token.token_type,
             )
 
-            user_session = UserSession.model_validate(data.user)
+            user_session = UserRead.model_validate(data.user)
             save_user(user_session)
 
         except Exception:
+            print(f"Ошибка сохранения сессии: {type(e).__name__}: {e}")
             self.clear_session()
             raise
 

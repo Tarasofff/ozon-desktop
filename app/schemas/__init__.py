@@ -1,4 +1,4 @@
-from schemas.user import UserBase, UserAccount, UserCreate, UserRead, UserSession
+from schemas.user import UserBase, UserAccount, UserCreate, UserRead, UserRead
 from schemas.patient import (
     PatientBase,
     PatientRead,

@@ -1,27 +1,11 @@
 import json
 from typing import Optional
 from core import app_config
-from app.schemas import UserSession
+from app.schemas import UserRead
 from pydantic import ValidationError
 
-# def save_user(user_data: UserBase) -> None:
-#     with open(app_config.user_session_file_path, "w", encoding="utf-8") as f:
-#         json.dump(user_data.model_dump(), f, ensure_ascii=False, indent=2)
 
-
-# def get_user() -> Optional[UserBase]:
-#     if not app_config.user_session_file_path.exists():
-#         return None
-#     with open(app_config.user_session_file_path, "r", encoding="utf-8") as f:
-#         return json.load(f)
-
-
-# def delete_user():
-#     if app_config.user_session_file_path.exists():
-#         app_config.user_session_file_path.unlink()
-
-
-def save_user(user_data: UserSession) -> None:
+def save_user(user_data: UserRead) -> None:
     path = app_config.user_session_file_path
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -34,7 +18,7 @@ def save_user(user_data: UserSession) -> None:
         )
 
 
-def get_user() -> Optional[UserSession]:
+def get_user() -> Optional[UserRead]:
     path = app_config.user_session_file_path
 
     if not path.exists():
@@ -44,7 +28,7 @@ def get_user() -> Optional[UserSession]:
         with path.open("r", encoding="utf-8") as f:
             user_data = json.load(f)
 
-        return UserSession.model_validate(user_data)
+        return UserRead.model_validate(user_data)
 
     except (json.JSONDecodeError, ValidationError):
         return None

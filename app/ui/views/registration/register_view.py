@@ -17,6 +17,7 @@ from ui.components.inputs import (
 )
 from viewmodels import RegisterViewModel
 from ui.views.base.form_container_view import FormContainerView
+from core.handlers.error_handler import show_error
 
 CREATE_PROFILE_SCHEMAS = {
     UserRole.NURSE: NurseCreate,
@@ -78,7 +79,6 @@ class RegisterView(FormContainerView):
         role_value = self.role_selector.currentData()
 
         if role_value is None:
-            self.on_error("Выберите роль")
             return None
 
         return UserAccount(

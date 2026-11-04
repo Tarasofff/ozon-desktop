@@ -62,5 +62,6 @@ class MainWindow(QMainWindow):
         self.register.vm.success.connect(self._on_login_success)
 
     def _on_login_success(self):
-        self.patients.load_patients()
-        self.router.navigate(AppRoutes.PATIENTS)
+        # self.patients.load_patients()
+        # self.router.navigate(AppRoutes.PATIENTS)
+        pass

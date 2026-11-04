@@ -12,4 +12,5 @@ class UserApiService:
         )
         response.raise_for_status()
 
+
         return AuthResponse.model_validate(response.json())

@@ -35,7 +35,3 @@ class UserCreate(BaseCreate):
 
 class UserRead(BaseEntity, UserBase):
     pass
-
-
-class UserSession(UserBase):
-    id: int
