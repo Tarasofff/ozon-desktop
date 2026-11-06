@@ -17,25 +17,25 @@ class LoginView(FormContainerView):
         self._connect_signals()
 
     def _create_widgets(self):
-        self.phone_input = PhoneInput()
-        self.password_input = PasswordInput()
-        self.login_button = BaseButton("Войти")
+        self._phone_input = PhoneInput()
+        self._password_input = PasswordInput()
+        self._login_button = BaseButton("Войти")
 
     def _setup_layout(self):
-        self.add(self.phone_input)
-        self.add(self.password_input)
-        self.add(self.login_button)
+        self.add(self._phone_input)
+        self.add(self._password_input)
+        self.add(self._login_button)
 
     def _connect_signals(self):
-        self.login_button.clicked.connect(self._handle_login)
+        self._login_button.clicked.connect(self._handle_login)
 
     def _get_validated_auth_payload(self) -> AuthPayload | None:
-        if not self.phone_input.validate() or not self.password_input.validate():
+        if not self._phone_input.validate() or not self._password_input.validate():
             return None
 
         return AuthPayload(
-            phone=self.phone_input.normalized_value(),
-            password=self.password_input.value(),
+            phone=self._phone_input.normalized_value(),
+            password=self._password_input.value(),
         )
 
     def _handle_login(self):

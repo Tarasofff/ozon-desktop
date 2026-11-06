@@ -13,37 +13,40 @@ class FormContainerView(QWidget):
     def __init__(self, title: str):
         super().__init__()
 
+        self._create_base_widgets(title)
+        self._setup_base_layout()
+
+    def _create_base_widgets(self, title: str):
         self.back_button = BackButton()
 
-        self.title_label = QLabel(title)
-        self.title_label.setObjectName("title")
+        self._title_label = QLabel(title)
+        self._title_label.setObjectName("title")
 
-        self.content_widget = QWidget()
-        self.content_widget.setObjectName("formContent")
-        self.content_layout = QVBoxLayout(self.content_widget)
+        self._content_widget = QWidget()
+        self._content_widget.setObjectName("formContent")
+
+        self.content_layout = QVBoxLayout(self._content_widget)
         self.content_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.content_layout.setSpacing(15)
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setObjectName("formScrollArea")
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
-        self.scroll_area.setHorizontalScrollBarPolicy(
+        self._scroll_area = QScrollArea()
+        self._scroll_area.setObjectName("formScrollArea")
+        self._scroll_area.setWidgetResizable(True)
+        self._scroll_area.setFrameShape(QScrollArea.Shape.NoFrame)
+        self._scroll_area.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
-        self.scroll_area.setVerticalScrollBarPolicy(
+        self._scroll_area.setVerticalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAsNeeded
         )
 
-        self.scroll_area.setWidget(self.content_widget)
+        self._scroll_area.setWidget(self._content_widget)
 
-        self.main_layout = QVBoxLayout(self)
-        self.main_layout.setSpacing(15)
-        self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.main_layout.addWidget(self.title_label)
-        self.main_layout.addWidget(self.scroll_area, 1)
-
-        self._setup_default_layout()
+        self._main_layout = QVBoxLayout(self)
+        self._main_layout.setSpacing(15)
+        self._main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._main_layout.addWidget(self._title_label)
+        self._main_layout.addWidget(self._scroll_area, 1)
 
     def add(
         self,
@@ -70,5 +73,5 @@ class FormContainerView(QWidget):
             index, widget, alignment=Qt.AlignmentFlag.AlignHCenter
         )
 
-    def _setup_default_layout(self) -> None:
+    def _setup_base_layout(self) -> None:
         self.add(self.back_button)

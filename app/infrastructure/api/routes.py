@@ -22,5 +22,16 @@ class AuthApi(BaseApi):
         self.LOGIN = f"{self.INDEX}/login"
 
 
+class PatientApi(BaseApi):
+
+    def __init__(self):
+        self.INDEX = f"{self._PREFIX}/patient"
+        self.LIST = f"{self.INDEX}/list"
+
+    def get_list(self, limit: int, offset: int) -> str:
+        return f"{self.LIST}?{self._pagination(limit, offset)}"
+
+
 user_api = UserApi()
 auth_api = AuthApi()
+patient_api = PatientApi()

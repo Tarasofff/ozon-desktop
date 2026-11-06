@@ -1,92 +1,119 @@
-from datetime import date
-
+from app.schemas.patient import PaginatedPatientsResponse
+from viewmodels.patients_viewmodel import PatientsViewModel
 from ui.components import TableColumn, BaseTable
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTableView, QPushButton
-from PySide6.QtCore import Qt
-from app.schemas import PatientBase
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QTableView,
+    QPushButton,
+)
+from PySide6.QtCore import QTimer, Qt, Slot
+from schemas import PatientBase
 
 
 class PatientsView(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Пациенты")
-        self.resize(900, 500)
+
+        self.vm = PatientsViewModel()
 
         self._create_widgets()
         self._setup_layout()
         self._connect_signals()
 
-    def _create_widgets(self):
-        self.title_label = QLabel("Пациенты")
-        self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.title_label.setObjectName("title")
+        QTimer.singleShot(0, self.vm.load_patients)
 
-        self.refresh_button = QPushButton("Обновить список")
+    def _create_widgets(self) -> None:
+        self._title_label = QLabel("Пациенты")
+        self._title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._title_label.setObjectName("title")
 
-        self.columns = [
-            TableColumn("Имя", lambda p: p.first_name),
-            TableColumn("Фамилия", lambda p: p.last_name),
-            TableColumn("Отчество", lambda p: p.middle_name),
+        self._refresh_button = QPushButton("Обновить список")
+
+        columns = [
             TableColumn(
-                "Телефон", lambda p: p.phone, align=Qt.AlignmentFlag.AlignCenter
+                "Имя",
+                lambda p: p.first_name,
+            ),
+            TableColumn(
+                "Фамилия",
+                lambda p: p.last_name,
+            ),
+            TableColumn(
+                "Отчество",
+                lambda p: p.patronymic,
+            ),
+            TableColumn(
+                "Телефон",
+                lambda p: p.phone,
+                align=Qt.AlignmentFlag.AlignCenter,
             ),
             TableColumn(
                 "Дата рождения",
-                lambda p: (p.date_of_birth),
+                lambda p: p.date_of_birth.strftime("%d.%m.%Y"),
                 align=Qt.AlignmentFlag.AlignCenter,
             ),
-            TableColumn("Email", lambda p: p.email or "—"),
+            TableColumn(
+                "Email",
+                lambda p: p.email,
+            ),
             TableColumn(
                 "Активен",
                 lambda p: "Да" if p.is_active else "Нет",
                 align=Qt.AlignmentFlag.AlignCenter,
             ),
-            TableColumn("Заметки", lambda p: p.notes or "—"),
         ]
 
-        self.table_view = QTableView()
-        self.model = BaseTable(columns=self.columns, data=[])
-        self.table_view.setModel(self.model)
+        self._table_model = BaseTable(
+            columns=columns,
+            data=[],
+        )
 
-        self.table_view.horizontalHeader().setStretchLastSection(True)
-        self.table_view.verticalHeader().setVisible(False)
-        self.table_view.setAlternatingRowColors(True)
-        self.table_view.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
-        self.table_view.setSelectionMode(QTableView.SelectionMode.SingleSelection)
+        self._table_view = QTableView()
+        self._table_view.setModel(self._table_model)
+
+        self._table_view.horizontalHeader().setStretchLastSection(True)
+        self._table_view.verticalHeader().setVisible(False)
+
+        self._table_view.setAlternatingRowColors(True)
+
+        self._table_view.setSelectionBehavior(
+            QAbstractItemView.SelectionBehavior.SelectRows
+        )
+
+        self._table_view.setSelectionMode(
+            QAbstractItemView.SelectionMode.SingleSelection
+        )
+
+        self._table_view.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
     def _setup_layout(self):
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.title_label)
-        layout.addWidget(self.refresh_button)
-        layout.addWidget(self.table_view)
+        self.setWindowTitle("Пациенты")
+        self.resize(900, 500)
 
-    def _connect_signals(self):
-        self.refresh_button.clicked.connect(self.load_patients)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self._title_label)
+        layout.addWidget(self._refresh_button)
+        layout.addWidget(self._table_view)
+
+    def _connect_signals(self) -> None:
+        self._refresh_button.clicked.connect(self._on_refresh_clicked)
+
+        self.vm.patients_loaded.connect(self._on_patients_loaded)
 
     def set_patients(self, patients: list[PatientBase]):
-        self.model.set_data(patients)
+        self._table_model.set_data(patients)
 
-    def load_patients(self):
-        example_patients = [
-            PatientBase(
-                first_name="Иван",
-                last_name="Иванович",
-                patronymic="Иванов",
-                phone="123456789",
-                date_of_birth=date(1990, 1, 1),
-                email="ivan@mail.com",
-                is_active=True,
-                notes="Нужно проверить",
-            ),
-            PatientBase(
-                first_name="Мария",
-                last_name="Сергеевна",
-                patronymic="Петрова",
-                phone="987654321",
-                date_of_birth=date(1992, 2, 3),
-                email=None,
-                is_active=False,
-                notes=None,
-            ),
-        ]
-        self.set_patients(example_patients)
+    @Slot(bool)
+    def _on_refresh_clicked(self, checked: bool = False) -> None:
+        self.vm.load_patients()
+
+    @Slot(object)
+    def _on_patients_loaded(
+        self,
+        response: PaginatedPatientsResponse,
+    ) -> None:
+        self._table_model.set_data(response.data)
+        self._table_view.resizeColumnsToContents()

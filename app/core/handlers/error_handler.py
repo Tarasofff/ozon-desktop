@@ -22,11 +22,23 @@ class ErrorHandler(QObject):
             Qt.ConnectionType.QueuedConnection,
         )
 
+    def _log_error(
+        self,
+        title: str,
+        message: str,
+    ) -> None:
+        print(
+            f"\n{'=' * 80}\n" f"{title}\n" f"{'=' * 80}\n" f"{message}\n",
+            file=sys.stderr,
+            flush=True,
+        )
+
     def show_error(
         self,
         message: str,
         title: str = "Ошибка",
     ) -> None:
+        self._log_error(title, message)
         self._error_occurred.emit(title, message)
 
     def handle_exception(

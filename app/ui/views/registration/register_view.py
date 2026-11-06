@@ -17,7 +17,6 @@ from ui.components.inputs import (
 )
 from viewmodels import RegisterViewModel
 from ui.views.base.form_container_view import FormContainerView
-from core.handlers.error_handler import show_error
 
 CREATE_PROFILE_SCHEMAS = {
     UserRole.NURSE: NurseCreate,
@@ -36,60 +35,60 @@ class RegisterView(FormContainerView):
         self._connect_signals()
 
     def _create_widgets(self):
-        self.first_name_input = FirstNameInput()
-        self.last_name_input = LastNameInput()
-        self.patronymic_input = PatronymicInput()
-        self.email_input = EmailInput()
-        self.phone_input = PhoneInput()
-        self.date_of_birth_input = DateInput()
+        self._first_name_input = FirstNameInput()
+        self._last_name_input = LastNameInput()
+        self._patronymic_input = PatronymicInput()
+        self._email_input = EmailInput()
+        self._phone_input = PhoneInput()
+        self._date_of_birth_input = DateInput()
 
-        self.role_selector = QComboBox()
-        self.role_selector.addItem("Выберите роль", None)
+        self._role_selector = QComboBox()
+        self._role_selector.addItem("Выберите роль", None)
         for role in UserRole:
-            self.role_selector.addItem(role.value, role)
+            self._role_selector.addItem(role.value, role)
 
-        self.password_input = PasswordInput()
-        self.register_button = BaseButton("Зарегистрироваться")
+        self._password_input = PasswordInput()
+        self._register_button = BaseButton("Зарегистрироваться")
 
     def _setup_layout(self):
-        self.add(self.first_name_input)
-        self.add(self.last_name_input)
-        self.add(self.patronymic_input)
-        self.add(self.email_input)
-        self.add(self.phone_input)
-        self.add(self.date_of_birth_input)
-        self.add(self.role_selector)
-        self.add(self.password_input)
-        self.add(self.register_button)
+        self.add(self._first_name_input)
+        self.add(self._last_name_input)
+        self.add(self._patronymic_input)
+        self.add(self._email_input)
+        self.add(self._phone_input)
+        self.add(self._date_of_birth_input)
+        self.add(self._role_selector)
+        self.add(self._password_input)
+        self.add(self._register_button)
 
     def _connect_signals(self):
-        self.register_button.clicked.connect(self._handle_registration)
+        self._register_button.clicked.connect(self._handle_registration)
 
     def _get_validated_user_account(self) -> UserAccount | None:
         if (
-            not self.first_name_input.validate()
-            or not self.last_name_input.validate()
-            or not self.patronymic_input.validate()
-            or not self.email_input.validate()
-            or not self.phone_input.validate()
-            or not self.password_input.validate()
+            not self._first_name_input.validate()
+            or not self._last_name_input.validate()
+            or not self._patronymic_input.validate()
+            or not self._email_input.validate()
+            or not self._phone_input.validate()
+            or not self._password_input.validate()
         ):
             return None
 
-        role_value = self.role_selector.currentData()
+        role_value = self._role_selector.currentData()
 
         if role_value is None:
             return None
 
         return UserAccount(
-            first_name=self.first_name_input.value(),
-            last_name=self.last_name_input.value(),
-            patronymic=self.patronymic_input.value(),
-            email=self.email_input.value(),
+            first_name=self._first_name_input.value(),
+            last_name=self._last_name_input.value(),
+            patronymic=self._patronymic_input.value(),
+            email=self._email_input.value(),
             is_active=True,
-            phone=self.phone_input.normalized_value(),
-            password=self.password_input.value(),
-            date_of_birth=self.date_of_birth_input.value(),
+            phone=self._phone_input.normalized_value(),
+            password=self._password_input.value(),
+            date_of_birth=self._date_of_birth_input.value(),
             role=UserRole(role_value),
         )
 

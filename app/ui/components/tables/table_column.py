@@ -3,7 +3,7 @@ from typing import Callable, Any
 from PySide6.QtCore import Qt
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class TableColumn:
     title: str
     getter: Callable[[Any], Any]
