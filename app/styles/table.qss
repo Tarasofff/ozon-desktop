@@ -1,29 +1,111 @@
-QTableView {
-    background-color: #fdfdfd;
-    alternate-background-color: #f6f6f6;
-    gridline-color: #e0e0e0;
-    border: 1px solid #ccc;
-    font-size: 14px;
+
+/* ==========================================
+   PATIENTS TABLE
+   ========================================== */
+
+QTableView#patientsTable {
+    background-color: #1e222b;
+    alternate-background-color: #252a35;
+
+    color: #e2e6ed;
+
+    border: 1px solid #343b49;
+    border-radius: 8px;
+
+    gridline-color: #343b49;
+
+    selection-background-color: #354d70;
+    selection-color: #ffffff;
+
+    outline: none;
 }
 
-QHeaderView::section {
-    background-color: #4CAF50;
-    color: white;
-    padding: 4px;
+/* Ячейки */
+
+QTableView#patientsTable::item {
+    padding: 8px 10px;
+    border: none;
+}
+
+QTableView#patientsTable::item:hover {
+    background-color: #303949;
+    color: #ffffff;
+}
+
+QTableView#patientsTable::item:selected {
+    background-color: #354d70;
+    color: #ffffff;
+}
+
+/* Заголовки столбцов */
+
+QTableView#patientsTable QHeaderView::section {
+    background-color: #2b303c;
+    color: #cbd5e1;
+
+    padding: 10px 8px;
+
+    border: none;
+    border-right: 1px solid #3a4250;
+    border-bottom: 2px solid #46546a;
+
     font-weight: bold;
-    border: 1px solid #ddd;
 }
 
-QTableView::item {
-    padding: 4px;
+/* Угол таблицы */
+
+QTableView#patientsTable QTableCornerButton::section {
+    background-color: #2b303c;
+    border: none;
+    border-bottom: 2px solid #46546a;
 }
 
-QTableView::item:selected {
-    background-color: #a8d5ff;
-    color: #000;
+/* Вертикальный скроллбар */
+
+QTableView#patientsTable QScrollBar:vertical {
+    background-color: #1e222b;
+    width: 10px;
+    margin: 2px;
+    border: none;
 }
 
-QTableView::item:hover {
-    background-color: #e3f2fd;
+QTableView#patientsTable QScrollBar::handle:vertical {
+    background-color: #515b6c;
+    min-height: 30px;
+    border-radius: 5px;
 }
 
+QTableView#patientsTable QScrollBar::handle:vertical:hover {
+    background-color: #718096;
+}
+
+QTableView#patientsTable QScrollBar::add-line:vertical,
+QTableView#patientsTable QScrollBar::sub-line:vertical {
+    height: 0;
+    border: none;
+}
+
+/* Горизонтальный скроллбар */
+
+QTableView#patientsTable QScrollBar:horizontal {
+    background-color: #1e222b;
+    height: 10px;
+    margin: 2px;
+    border: none;
+}
+
+QTableView#patientsTable QScrollBar::handle:horizontal {
+    background-color: #515b6c;
+    min-width: 30px;
+    border-radius: 5px;
+}
+
+QTableView#patientsTable QScrollBar::handle:horizontal:hover {
+    background-color: #718096;
+}
+
+QTableView#patientsTable QScrollBar::add-line:horizontal,
+QTableView#patientsTable QScrollBar::sub-line:horizontal {
+    width: 0;
+    border: none;
+}

@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QTableView,
     QPushButton,
 )
-from PySide6.QtCore import QTimer, Qt, Slot
+from PySide6.QtCore import Qt, Slot
 from schemas import PatientBase
 
 
@@ -22,8 +22,6 @@ class PatientsView(QWidget):
         self._create_widgets()
         self._setup_layout()
         self._connect_signals()
-
-        QTimer.singleShot(0, self.vm.load_patients)
 
     def _create_widgets(self) -> None:
         self._title_label = QLabel("Пациенты")
@@ -72,12 +70,25 @@ class PatientsView(QWidget):
         )
 
         self._table_view = QTableView()
+        self._table_view.setObjectName("patientsTable")
         self._table_view.setModel(self._table_model)
 
-        self._table_view.horizontalHeader().setStretchLastSection(True)
-        self._table_view.verticalHeader().setVisible(False)
-
         self._table_view.setAlternatingRowColors(True)
+        self._table_view.setShowGrid(True)
+        self._table_view.setSortingEnabled(False)
+        self._table_view.setWordWrap(False)
+
+        self._table_view.setTextElideMode(Qt.TextElideMode.ElideRight)
+
+        self._table_view.horizontalHeader().setHighlightSections(False)
+        self._table_view.horizontalHeader().setDefaultSectionSize(130)
+        self._table_view.horizontalHeader().setMinimumSectionSize(100)
+        self._table_view.horizontalHeader().setFixedHeight(42)
+
+        self._table_view.horizontalHeader().setStretchLastSection(True)
+
+        self._table_view.verticalHeader().setVisible(False)
+        self._table_view.verticalHeader().setDefaultSectionSize(42)
 
         self._table_view.setSelectionBehavior(
             QAbstractItemView.SelectionBehavior.SelectRows
@@ -99,7 +110,7 @@ class PatientsView(QWidget):
         layout.addWidget(self._table_view)
 
     def _connect_signals(self) -> None:
-        self._refresh_button.clicked.connect(self._on_refresh_clicked)
+        # self._refresh_button.clicked.connect(self._on_refresh_clicked)
 
         self.vm.patients_loaded.connect(self._on_patients_loaded)
 
@@ -117,3 +128,4 @@ class PatientsView(QWidget):
     ) -> None:
         self._table_model.set_data(response.data)
         self._table_view.resizeColumnsToContents()
+        self._table_view.horizontalHeader().setStretchLastSection(True)

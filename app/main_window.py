@@ -5,6 +5,7 @@ from ui.views.registration.register_view import RegisterView
 from core import app_config
 from infrastructure.navigation.router import Router
 from PySide6.QtGui import QIcon
+from PySide6.QtCore import QTimer
 from ui.views.start.start_view import StartView
 from ui.views.login.login_view import LoginView
 
@@ -18,6 +19,9 @@ class MainWindow(QMainWindow):
         self._setup_router()
         self._setup_views()
         self._setup_navigation()
+
+        # TEST
+        QTimer.singleShot(0, self._on_login_success)
 
     def _setup_window(self) -> None:
         self.setWindowTitle(app_config.app_name)
@@ -62,6 +66,5 @@ class MainWindow(QMainWindow):
         self.register.vm.success.connect(self._on_login_success)
 
     def _on_login_success(self):
-        # self.patients.vm.load_patients()
-        # self.router.navigate(AppRoutes.PATIENTS)
-        pass
+        self.patients.vm.load_patients()
+        self.router.navigate(AppRoutes.PATIENTS)
