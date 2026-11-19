@@ -1,18 +1,22 @@
-/* Кнопки */
+/* Базовая кнопка */
 QPushButton {
-    background-color: #2d7ff9;
-    color: white;
     border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 10px 14px;
     min-height: 24px;
     font-size: 14px;
 }
 
-QPushButton:hover {
-    background-color: #1f6de0;
+/* Стандартная кнопка */
+QPushButton#baseButton {
+    background-color: #2D7FF9;
+    color: white;
 }
 
-QPushButton:pressed {
-    background-color: #1a5fc0;
+QPushButton#baseButton:hover {
+    background-color: #1F6DE0;
+}
+
+QPushButton#baseButton:pressed {
+    background-color: #1A5FC0;
 }

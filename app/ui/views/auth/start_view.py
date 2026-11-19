@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PySide6.QtCore import Qt
+from ui.components.buttons.base_button import BaseButton
 from viewmodels import StartViewModel
 
 
@@ -17,8 +18,8 @@ class StartView(QWidget):
         self._title_label.setObjectName("title")
         self._title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self._login_button = QPushButton("Вход")
-        self._register_button = QPushButton("Регистрация")
+        self._login_button = BaseButton("Вход")
+        self._register_button = BaseButton("Регистрация")
 
     def _setup_layout(self):
         layout = QVBoxLayout(self)

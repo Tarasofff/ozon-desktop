@@ -1,4 +1,5 @@
-from app.schemas.patient import PaginatedPatientsResponse
+from schemas.patient import PaginatedPatientsResponse
+from ui.components.buttons.base_button import BaseButton
 from viewmodels.patients_viewmodel import PatientsViewModel
 from ui.components import TableColumn, BaseTable
 from PySide6.QtWidgets import (
@@ -7,7 +8,6 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QTableView,
-    QPushButton,
 )
 from PySide6.QtCore import Qt, Slot
 from schemas import PatientBase
@@ -24,11 +24,11 @@ class PatientsView(QWidget):
         self._connect_signals()
 
     def _create_widgets(self) -> None:
-        self._title_label = QLabel("Пациенты")
+        self._title_label = QLabel("")
         self._title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._title_label.setObjectName("title")
 
-        self._refresh_button = QPushButton("Обновить список")
+        self._refresh_button = BaseButton("Обновить список")
 
         columns = [
             TableColumn(

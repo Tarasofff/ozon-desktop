@@ -6,15 +6,17 @@ from core.handlers.error_handler import (
     setup_asyncio_exception_handler,
     setup_exception_handler,
 )
-from main_window import MainWindow
+from app.ui.main_window import MainWindow
 
 
-def load_styles(app: QApplication):
+def load_styles(app: QApplication) -> None:
     styles_dir = Path(__file__).parent / "styles"
+
     qss = ""
 
-    for file in styles_dir.glob("*.qss"):
+    for file in sorted(styles_dir.glob("*.qss")):
         qss += file.read_text(encoding="utf-8")
+        qss += "\n"
 
     app.setStyleSheet(qss)
 

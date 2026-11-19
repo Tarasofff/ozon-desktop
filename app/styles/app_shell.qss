@@ -1,0 +1,103 @@
+
+/* Main application shell */
+
+QWidget#appShell {
+    background-color: #F4F6F9;
+}
+
+/* Sidebar */
+
+QFrame#sidebar {
+    background-color: #1E2C40;
+    border: none;
+}
+
+QLabel#brandLabel {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px 4px;
+}
+
+/* Navigation */
+
+QPushButton#navButton {
+    background-color: transparent;
+    color: #C4CEDA;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+QPushButton#navButton:hover {
+    background-color: #2B3D55;
+    color: #FFFFFF;
+}
+
+QPushButton#navButton:checked {
+    background-color: #344B67;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+/* Logout */
+
+QPushButton#logoutButton {
+    background-color: transparent;
+    color: #E5A6A6;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 14px;
+}
+
+QPushButton#logoutButton:hover {
+    background-color: #493743;
+    color: #FFFFFF;
+}
+
+/* Main area */
+
+QWidget#mainArea {
+    background-color: #F4F6F9;
+}
+
+/* Top bar */
+
+QFrame#topBar {
+    background-color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid #E5EAF0;
+}
+
+QLabel#pageTitle {
+    color: #29384D;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Profile */
+
+QPushButton#profileButton {
+    background-color: #F4F6F9;
+    color: #29384D;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+}
+
+QPushButton#profileButton:hover {
+    background-color: #E9EEF5;
+}
+
+/* Page content */
+
+QStackedWidget#contentStack {
+    background-color: #F4F6F9;
+    border: none;
+}
