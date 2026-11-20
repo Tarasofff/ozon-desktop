@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from infrastructure.navigation.page_config import APP_PAGES
-from ui.layouts.app_shell import AppShell
+from ui.layouts.app_shell.app_shell import AppShell
 from infrastructure.navigation.routes import AppRoutes, AuthRoutes
 from ui.views.patients.patients_view import PatientsView
 from ui.views.auth.register_view import RegisterView
